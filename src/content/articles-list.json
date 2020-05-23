@@ -1,7 +1,7 @@
 {
   "topArticles": [
     {
-      "id": "github-pages-101-roadmap",
+      "id": "roadmap",
       "title" : "GitHub Pages 101: RoadMap",
       "time" : "2 min read",
       "date" : "May 12, 2020",
@@ -10,7 +10,7 @@
       "text": "I’ve decided to create a detailed guide on GitHub Pages, a platform used by over 40 million developers to host their projects as well as static..."
     },
     {
-      "id": "github-pages-what-is-github-pages",
+      "id": "what-is-github-pages",
       "title": "GitHub Pages 101: What is GitHub Pages?",
       "time": "4 min read",
       "date": "May 12, 2020",
@@ -23,12 +23,12 @@
       "title": "Integrating PayTM API for mobile",
       "time": "4 min read",
       "date": "Dec 9, 2019",
-      "topic": "SDK & APIs",
+      "topic": "SDKs & APIs",
       "imgUrl": "https://source.unsplash.com/8WO2s6Yr0Ok/200x200",
       "text": "One of the most amazing recent experiences I had with a popular third-party SDK was with the PayTM payment gateway Android SDK. The task..."
     },
     {
-      "id": "github-pages-creating-a-website",
+      "id": "creating-a-website",
       "title": "GitHub Pages 101: Creating a Website",
       "time": "4 min read",
       "date": "May 14, 2020",
@@ -40,7 +40,7 @@
 
   "allArticles" : [
     {
-      "id": "github-pages-101-roadmap",
+      "id": "roadmap",
       "title" : "GitHub Pages 101: RoadMap",
       "time" : "2 min read",
       "date" : "May 12, 2020",
@@ -49,7 +49,7 @@
       "text": "I’ve decided to create a detailed guide on GitHub Pages, a platform used by over 40 million developers to host their projects as well as static..."
     },
     {
-      "id": "github-pages-what-is-github-pages",
+      "id": "what-is-github-pages",
       "title": "GitHub Pages 101: What is GitHub Pages?",
       "time": "4 min read",
       "date": "May 12, 2020",
@@ -62,12 +62,12 @@
       "title": "Integrating PayTM API for web",
       "time": "4 min read",
       "date": "Dec 9, 2019",
-      "topic": "SDK & APIs",
+      "topic": "SDKs & APIs",
       "imgUrl": "https://source.unsplash.com/8WO2s6Yr0Ok/500x500",
       "text": "One of the most amazing recent experiences I had with a popular third-party SDK was with the PayTM payment gateway Android SDK. The task..."
     },
     {
-      "id": "github-pages-creating-a-website",
+      "id": "creating-a-website",
       "title": "GitHub Pages 101: Creating a Website",
       "time": "4 min read",
       "date": "May 14, 2020",

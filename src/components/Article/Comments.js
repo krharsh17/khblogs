@@ -1,8 +1,24 @@
-import React, {useState, useEffect} from "react";
-import firebase from "../Firebase";
-import {ClipLoader} from "react-spinners";
-import styled from "styled-components";
-import {device} from "../Global";
+import React, { useEffect, useState } from "react"
+import { getFirebase } from "../Firebase"
+import { ClipLoader } from "react-spinners"
+import styled from "styled-components"
+import { device } from "../Global"
+
+let database
+
+const initDB = (callback) => {
+
+  if (database === undefined) {
+    const lazyApp = import("firebase/app")
+    const lazyDatabase = import("firebase/database")
+
+    Promise.all([lazyApp, lazyDatabase]).then(([firebase]) => {
+      database = getFirebase(firebase).database()
+      if (callback !== undefined)
+        callback()
+    })
+  }
+}
 
 const CommentBoxContainer = styled.div`
     position: relative;
@@ -20,7 +36,7 @@ const CommentBoxContainer = styled.div`
         width: 600px;
     }
 
-`;
+`
 
 const CommentBoxInput = styled.textarea`
     width: 86vw;
@@ -48,7 +64,7 @@ const CommentBoxInput = styled.textarea`
         width: 580px;
         margin: 10px 10px;
     }
-`;
+`
 
 const CommentBoxFooter = styled.div`
     display: flex;
@@ -59,7 +75,7 @@ const CommentBoxFooter = styled.div`
     @media ${device.tablet} {
         flex-direction: row;
     }
-`;
+`
 
 const CommentBoxName = styled.input`
     width: 80vw;
@@ -84,7 +100,7 @@ const CommentBoxName = styled.input`
         margin: 0;
     }
 
-`;
+`
 
 const CommentBoxEmail = styled.input`
     background: ${props => props.theme.light};
@@ -109,7 +125,7 @@ const CommentBoxEmail = styled.input`
         margin: 0;
     }
 
-`;
+`
 
 const CommentBoxPost = styled.input`
     background: ${props => props.theme.dark};
@@ -140,7 +156,7 @@ const CommentBoxPost = styled.input`
         width: 90px;
         margin: 0;
     }
-`;
+`
 
 const CommentBoxShowButton = styled.div`    
     width: 300px;
@@ -169,58 +185,64 @@ const CommentBoxShowButton = styled.div`
         width: 600px;
         height: 75px;
     }
-`;
+`
 
 const CommentBox = (props) => {
-    const [comment, setComment] = useState("");
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [isShown, setIsShown] = useState('button');
+  const [comment, setComment] = useState("")
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [isShown, setIsShown] = useState("button")
 
-    switch (isShown) {
-        case 'form':
-            return (<CommentBoxContainer>
-                <CommentBoxInput placeholder={'Write a reaction!'} onChange={(e) => {
-                    setComment(e.target.value);
-                }}/>
-                <CommentBoxFooter>
-                    <CommentBoxName placeholder={'Name'} onChange={(event => setName(event.target.value))}/>
-                    <CommentBoxEmail placeholder={'Email'} onChange={(event => setEmail(event.target.value))}/>
-                    <CommentBoxPost type={'button'}
-                                    value={'Post!'}
-                                    onClick={() => {
-                                        firebase.database().ref('articles/' + props.id + '/comments/')
-                                            .push({
-                                                name: name,
-                                                email: email,
-                                                comment: comment
-                                            })
-                                            .then(() => {
-                                                setIsShown('hidden');
-                                            });
-                                    }}
-                                    disabled={!(comment.length !== 0 && name.length !== 0 && email.length !== 0 && /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email))}/>
-                </CommentBoxFooter>
-            </CommentBoxContainer>);
-        case 'button':
-            return (
-                <CommentBoxShowButton
-                    onClick={() => {
-                        setIsShown('form');
-                    }}>
-                    Comment!
-                </CommentBoxShowButton>
-            );
-        case 'hidden':
-        default:
-            return <div/>;
-    }
+  useEffect(() => {
+    initDB()
+  })
+
+  switch (isShown) {
+    case "form":
+      return (<CommentBoxContainer>
+        <CommentBoxInput placeholder={"Write a reaction!"} onChange={(e) => {
+          setComment(e.target.value)
+        }}/>
+        <CommentBoxFooter>
+          <CommentBoxName placeholder={"Name"} onChange={(event => setName(event.target.value))}/>
+          <CommentBoxEmail placeholder={"Email"} onChange={(event => setEmail(event.target.value))}/>
+          <CommentBoxPost type={"button"}
+                          value={"Post!"}
+                          onClick={() => {
+                            if (database !== undefined) {
+                              database.ref("articles/" + props.id + "/comments/")
+                                .push({
+                                  name: name,
+                                  email: email,
+                                  comment: comment
+                                })
+                                .then(() => {
+                                  setIsShown("hidden")
+                                })
+                            }
+                          }}
+                          disabled={!(comment.length !== 0 && name.length !== 0 && email.length !== 0 && /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email))}/>
+        </CommentBoxFooter>
+      </CommentBoxContainer>)
+    case "button":
+      return (
+        <CommentBoxShowButton
+          onClick={() => {
+            setIsShown("form")
+          }}>
+          Comment!
+        </CommentBoxShowButton>
+      )
+    case "hidden":
+    default:
+      return <div/>
+  }
 }
 
 const CommentsList = styled.div`
     margin-top: 24px;
     margin-bottom: 24px;
-`;
+`
 
 const CommentsTitle = styled.div`
     margin-bottom: 8px;
@@ -229,48 +251,51 @@ const CommentsTitle = styled.div`
     color: ${props => props.theme.light};
     font-family: 'Quicksand', sans-serif;
     font-weight: 700;
-`;
+`
 
 const Comments = (props) => {
-    const [loading, setLoading] = useState('true');
-    const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState("true")
+  const [comments, setComments] = useState([])
 
-    useEffect(() => {
-        firebase.database().ref('articles/' + props.id + '/comments')
-            .on('value', snapshot => {
-                const comments = [];
-                if (snapshot.val() !== null) {
-                    Object.values(snapshot.val()).forEach((elem) => {
-                        const temp = <Comment key={elem.email} comment={elem.comment} name={elem.name}/>
-                        comments.push(temp);
-                    });
-                    setComments(comments);
-                    setLoading('false');
-                } else
-                    setLoading('none');
-            });
-    }, []);
+  useEffect(() => {
+    initDB(() => {
+      database.ref("articles/" + props.id + "/comments")
+        .on("value", snapshot => {
+          const comments = []
+          if (snapshot.val() !== null) {
+            Object.values(snapshot.val()).forEach((elem) => {
+              const temp = <Comment key={elem.email + Date.now() + Math.random() * 20} comment={elem.comment}
+                                    name={elem.name}/>
+              comments.push(temp)
+            })
+            setComments(comments)
+            setLoading("false")
+          } else
+            setLoading("none")
+        })
+    })
+  }, [props.id])
 
 
-    if (loading === 'true') {
-        return <div style={{
-            marginTop: '40px'
-        }}>
-            <ClipLoader
-                size={50}
-                color={"#121212"}
-                loading={true}
-            />
-        </div>
-    } else if (loading === 'false') {
+  if (loading === "true") {
+    return <div style={{
+      marginTop: "40px"
+    }}>
+      <ClipLoader
+        size={50}
+        color={"#121212"}
+        loading={true}
+      />
+    </div>
+  } else if (loading === "false") {
 
-        return <CommentsList>
-            <CommentsTitle>Top comments</CommentsTitle>
-            {comments}
-        </CommentsList>
-    } else {
-        return <div/>
-    }
+    return <CommentsList>
+      <CommentsTitle>Top comments</CommentsTitle>
+      {comments}
+    </CommentsList>
+  } else {
+    return <div/>
+  }
 
 
 }
@@ -290,7 +315,7 @@ const CommentContainer = styled.div`
     @media ${device.tablet} {
         width: 500px;
     }
-`;
+`
 
 const CommentImage = styled.div`
     height: 48px;
@@ -306,7 +331,7 @@ const CommentImage = styled.div`
     font-weight: 500;
     border-radius: 50px;
     margin: 8px 12px;
-`;
+`
 
 const CommentDetails = styled.div`
     display: flex;
@@ -317,12 +342,12 @@ const CommentDetails = styled.div`
     color: ${props => props.theme.dark};
     font-size: 14px;
     margin: 10px 0;
-`;
+`
 
 const CommentAuthor = styled.div`
     font-weight: 700;
     font-size: 16px;
-`;
+`
 
 const CommentText = styled.div`
     font-weight: 400;
@@ -333,18 +358,18 @@ const CommentText = styled.div`
     @media ${device.tablet} {
         width: 400px;
     }
-`;
+`
 
 const Comment = (props) => {
-    return (
-        <CommentContainer>
-            <CommentImage>{props.name[0].toUpperCase()}</CommentImage>
-            <CommentDetails>
-                <CommentAuthor>{props.name}</CommentAuthor>
-                <CommentText>{props.comment}</CommentText>
-            </CommentDetails>
-        </CommentContainer>
-    );
+  return (
+    <CommentContainer>
+      <CommentImage>{props.name[0].toUpperCase()}</CommentImage>
+      <CommentDetails>
+        <CommentAuthor>{props.name}</CommentAuthor>
+        <CommentText>{props.comment}</CommentText>
+      </CommentDetails>
+    </CommentContainer>
+  )
 }
 
-export {CommentBox, Comments};
+export { CommentBox, Comments }

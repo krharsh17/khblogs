@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react";
-import styled from "styled-components";
-import {Transition} from "react-transition-group";
-import DarkModeToggle from "react-dark-mode-toggle";
-import {device} from "../Global";
+import React, { useEffect, useState } from "react"
+import styled from "styled-components"
+import { Transition } from "react-transition-group"
+import DarkModeToggle from "react-dark-mode-toggle"
+import { device } from "../Global"
 
 const NavContainer = styled.div`
     position: fixed;
@@ -11,7 +11,7 @@ const NavContainer = styled.div`
     z-index: 990;
     backdrop-filter: blur(6px);
     transition: 0.5s;
-    transform: translateY(${({state}) => (state === "entering" || state === "entered" ? 0 : '-72px')});
+    transform: translateY(${({ state }) => (state === "entering" || state === "entered" ? 0 : "-72px")});
     background-color: ${props => props.theme.light50};
     width: 90%;
     min-height: 64px;
@@ -33,7 +33,7 @@ const NavContainer = styled.div`
         padding-right: 10%;
         font-size: 32px;
     }
-`;
+`
 
 const NavBrand = styled.a`
     font-family: 'Over the Rainbow', cursive;
@@ -44,46 +44,46 @@ const NavBrand = styled.a`
     @media ${device.tablet} {
         display: block;
     }
-`;
+`
 
 const TopNav = (props) => {
 
-    const [animate, setAnimate] = useState(false)
+  const [animate, setAnimate] = useState(false)
 
-    const doAnimate = (finalState) => {
-        setAnimate(finalState);
-    }
+  const doAnimate = (finalState) => {
+    setAnimate(finalState)
+  }
 
-    let previousState = 0;
+  let previousState = 0
 
 
-    useEffect(() => {
-        window.addEventListener('scroll', () => {
-            if (document.documentElement.scrollTop > window.innerHeight && !animate && document.documentElement.scrollTop < previousState) {
-                doAnimate(true);
-            } else if (!animate) {
-                doAnimate(false);
-            }
-            previousState = document.documentElement.scrollTop;
-        });
-    }, []);
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      if (document.documentElement.scrollTop > window.innerHeight && !animate && document.documentElement.scrollTop < previousState) {
+        doAnimate(true)
+      } else if (!animate) {
+        doAnimate(false)
+      }
+      previousState = document.documentElement.scrollTop
+    })
+  }, [])
 
-    return (
-        <Transition in={animate} timeout={1000}>
-            {(state) => (
-                <NavContainer state={state}>
-                    <NavBrand href={'/'}>KHBlogs</NavBrand>
-                    {props.title}
-                        <DarkModeToggle
-                            onChange={props.toggleDarkMode}
-                            checked={props.darkMode}
-                            size={56}
-                        />
-                </NavContainer>
-            )}
-        </Transition>
+  return (
+    <Transition in={animate} timeout={1000}>
+      {(state) => (
+        <NavContainer state={state}>
+          <NavBrand href={"/"}>KHBlogs</NavBrand>
+          {props.title}
+          <DarkModeToggle
+            onChange={props.toggleDarkMode}
+            checked={props.darkMode}
+            size={56}
+          />
+        </NavContainer>
+      )}
+    </Transition>
 
-    );
+  )
 }
 
-export default TopNav;
+export default TopNav

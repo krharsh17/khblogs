@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import styled from 'styled-components';
-import {device} from "../Global";
-import articlesList from "../../content/articles-list.json";
+import React, { useEffect, useState } from "react"
+import styled from "styled-components"
+import { device } from "../Global"
+import articlesList from "../../content/articles-list.json"
 
 const TopArticlesRow = styled.div`
     display: flex;
@@ -17,7 +17,7 @@ const TopArticlesRow = styled.div`
         margin-left: 10%;
         margin-right: 10%;
     }
-`;
+`
 
 const MainArticleCol = styled.div`
     display: flex;
@@ -28,7 +28,7 @@ const MainArticleCol = styled.div`
     @media ${device.tablet}{
         width: 55%;
     }
-`;
+`
 
 const SideArticlesCol = styled.div`
     display: flex;
@@ -40,7 +40,7 @@ const SideArticlesCol = styled.div`
     @media ${device.tablet}{
         width: 42%;
     }
-`;
+`
 
 const SideArticleContainer = styled.div`
     display: flex;
@@ -49,7 +49,7 @@ const SideArticleContainer = styled.div`
     justify-content: space-evenly;
     width: 100%;
     margin-bottom: 40px;
-`;
+`
 
 const ArticleCategory = styled.div`
     color: ${props => props.theme.secondary};
@@ -59,14 +59,14 @@ const ArticleCategory = styled.div`
     @media ${device.laptop} {
         font-size: 20px;
     }
-`;
+`
 
 const MainArticleTitle = styled.div`
     color: ${props => props.theme.dark};
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 40px;
     font-weight: 700;
-`;
+`
 
 const MainArticleText = styled.div`
     color: ${props => props.theme.dark};
@@ -74,7 +74,7 @@ const MainArticleText = styled.div`
     font-size: 20px;
     font-weight: 300;
     margin-bottom: 24px;
-`;
+`
 
 const MainArticleImage = styled.img`
     width: 100%;
@@ -88,7 +88,7 @@ const MainArticleImage = styled.img`
         border-radius: 4px;  
         margin-bottom: 20px;
     }
-`;
+`
 
 const SideArticleImage = styled.img`
         width: 128px;
@@ -99,7 +99,7 @@ const SideArticleImage = styled.img`
         width: 180px;
         height: auto;
     }
-`;
+`
 
 const SideArticleTitle = styled.div`
     color: ${props => props.theme.dark};
@@ -114,7 +114,7 @@ const SideArticleTitle = styled.div`
     @media ${device.laptop} {
         font-size: 28px;
     }
-`;
+`
 
 const SideArticleText = styled.div`
     color: ${props => props.theme.dark};
@@ -135,7 +135,7 @@ const SideArticleText = styled.div`
         font-size: 18px;
         max-height: 4.4em;
     }
-`;
+`
 
 const ArticleLink = styled.a`
     text-decoration: none;
@@ -146,57 +146,57 @@ const ArticleLink = styled.a`
   }
     
     
-`;
+`
 
 const TopArticles = () => {
-    const [state, setState] = useState({articles: []});
+  const [state, setState] = useState({ articles: [] })
 
-    useEffect(() => {
+  useEffect(() => {
 
-        if(state.articles.length === 0)
-        setState({articles: articlesList.topArticles})
+    if (state.articles.length === 0)
+      setState({ articles: articlesList.topArticles })
 
-        console.log(state);
 
-    });
+  }, [state.articles.length])
 
-    return (
-        <TopArticlesRow>
-            <MainArticleCol>
-                <MainArticleImage src={state.articles[0] !== undefined ? state.articles[0].imgUrl : ''}/>
-                <ArticleCategory>{state.articles[0] !== undefined ? state.articles[0].topic : ''}</ArticleCategory>
+  return (
+    <TopArticlesRow>
+      <MainArticleCol>
+        <MainArticleImage src={state.articles[0] !== undefined ? state.articles[0].imgUrl : ""}/>
+        <ArticleCategory>{state.articles[0] !== undefined ? state.articles[0].topic : ""}</ArticleCategory>
+        <ArticleLink
+          href={"articles/" + (state.articles[0] !== undefined ? state.articles[0].topic.toLowerCase().split(" ").join("-") + "/" + state.articles[0].id : "")}>
+          <MainArticleTitle>{state.articles[0] !== undefined ? state.articles[0].title : ""}</MainArticleTitle>
+        </ArticleLink>
+        <MainArticleText>{state.articles[0] !== undefined ? state.articles[0].text : ""}</MainArticleText>
+      </MainArticleCol>
+
+      <SideArticlesCol>
+
+        {
+          state.articles.slice(1, 4).map((article) =>
+            <SideArticleContainer>
+              <div>
                 <ArticleLink
-                    href={'?article=' + (state.articles[0] !== undefined ? state.articles[0].id : '')}>
-                    <MainArticleTitle>{state.articles[0] !== undefined ? state.articles[0].title : ''}</MainArticleTitle>
+                  href={"articles/" + (article !== undefined ? article.topic.toLowerCase().split(" ").join("-") + "/" + article.id : "")}>
+                  <SideArticleImage src={article !== undefined ? article.imgUrl : ""}/>
                 </ArticleLink>
-                <MainArticleText>{state.articles[0] !== undefined ? state.articles[0].text : ''}</MainArticleText>
-            </MainArticleCol>
+              </div>
+              <div style={{ marginLeft: "1rem" }}>
+                <ArticleCategory>{article !== undefined ? article.topic : ""}</ArticleCategory>
+                <ArticleLink
+                  href={"articles/" + (article !== undefined ? article.topic.toLowerCase().split(" ").join("-") + "/" + article.id : "")}>
+                  <SideArticleTitle>{article !== undefined ? article.title : ""}</SideArticleTitle>
+                </ArticleLink>
+                <SideArticleText>{article !== undefined ? article.text : ""}</SideArticleText>
+              </div>
+            </SideArticleContainer>
+          )
+        }
 
-            <SideArticlesCol>
+      </SideArticlesCol>
+    </TopArticlesRow>
 
-                {
-                    state.articles.slice(1, 4).map((article) =>
-                        <SideArticleContainer>
-                            <div>
-                                <ArticleLink
-                                    href={'?article=' + (article !== undefined ? article.id : '')}>
-                                    <SideArticleImage src={article !== undefined ? article.imgUrl : ''}/>
-                                </ArticleLink>
-                            </div>
-                            <div style={{marginLeft: '1rem'}}>
-                                <ArticleCategory>{article !== undefined ? article.topic : ''}</ArticleCategory>
-                                <ArticleLink href={'?article=' + (article !== undefined ? article.id : '')}>
-                                    <SideArticleTitle>{article !== undefined ? article.title : ''}</SideArticleTitle>
-                                </ArticleLink>
-                                <SideArticleText>{article !== undefined ? article.text : ''}</SideArticleText>
-                            </div>
-                        </SideArticleContainer>
-                    )
-                }
-
-            </SideArticlesCol>
-        </TopArticlesRow>
-
-    );
+  )
 }
-export {TopArticles}
+export { TopArticles }

@@ -1,14 +1,32 @@
-import React, {useEffect, useState} from 'react';
-import styled from "styled-components";
-import {device} from "../Global";
-import articlesList from "../../content/articles-list.json";
-import newspaper from '../../images/newspaper.png';
+import React, { useEffect, useState } from "react"
+import styled from "styled-components"
+import { device } from "../Global"
+import articlesList from "../../content/articles-list.json"
+import newspaper from "../../images/newspaper.png"
+import { getFirebase } from "../Firebase"
+
+
+let database
+
+const initDB = (callback) => {
+
+  if (database === undefined) {
+    const lazyApp = import("firebase/app")
+    const lazyDatabase = import("firebase/database")
+
+    Promise.all([lazyApp, lazyDatabase]).then(([firebase]) => {
+      database = getFirebase(firebase).database()
+      if (callback !== undefined)
+        callback()
+    })
+  }
+}
 
 const HomeBodyContainer = styled.div`
     display: flex;
     flex-direction: column;
     justify-contents: flex-start;
-`;
+`
 
 const LatestPostsTitle = styled.div`
     margin-left: 5%;
@@ -25,7 +43,7 @@ const LatestPostsTitle = styled.div`
         width: 80%;
         font-size: 40px;
     }
-`;
+`
 
 const PostsContainer = styled.div`
     display: flex;
@@ -37,7 +55,7 @@ const PostsContainer = styled.div`
         padding: 0 10%;
         justify-content: space-between;
     }
-`;
+`
 
 const PostContainer = styled.div`
     display: flex;
@@ -57,13 +75,13 @@ const PostContainer = styled.div`
         text-align: left;
         margin-bottom: 96px;
     }
-`;
+`
 
 const PostImage = styled.img`
     width: 100%;
     height: auto;
     border-radius: 4px;
-`;
+`
 
 const PostTitle = styled.div`
     font-family: 'Source Sans Pro', sans-serif;
@@ -78,7 +96,7 @@ const PostTitle = styled.div`
     }
     
     
-`;
+`
 
 const PostCategory = styled.div`
     margin-top: 16px;
@@ -107,7 +125,7 @@ const PostRead = styled.a`
         }
     }
 
-`;
+`
 
 const NewsLetterContainer = styled.div`
     display: flex;
@@ -126,7 +144,7 @@ const NewsLetterContainer = styled.div`
         justify-content: space-between;
         align-items:center;
     }
-`;
+`
 
 const NewsLetterTitleContainer = styled.div`
     display: flex;
@@ -137,7 +155,7 @@ const NewsLetterTitleContainer = styled.div`
     @media ${device.laptop} {
         justify-content: flex-start;
     }
-`;
+`
 
 const NewsLetterTitle = styled.div`
     font-family: 'Source Sans Pro', sans-serif;
@@ -151,7 +169,7 @@ const NewsLetterTitle = styled.div`
         width: 600px; 
         font-size: 64px;
     }
-`;
+`
 
 const NewsLetterSubHeader = styled.div`
     font-family: 'Source Sans Pro', sans-serif;
@@ -167,7 +185,7 @@ const NewsLetterSubHeader = styled.div`
         align-self: flex-start;
     }
 
-`;
+`
 
 const NewsLetterCard = styled.div`
     height: 275px;
@@ -181,7 +199,7 @@ const NewsLetterCard = styled.div`
         margin: 36px 0;
     }
 
-`;
+`
 
 const NewspaperImage = styled.div`
     background-image: url('https://source.unsplash.com/wyN0QFDiXw0/600x400');
@@ -196,7 +214,7 @@ const NewspaperImage = styled.div`
         width: 360px;
     }
 
-`;
+`
 
 const NewsLetterSubscribe = styled.div`
     font-family: 'Ropa Sans', sans-serif;
@@ -209,14 +227,14 @@ const NewsLetterSubscribe = styled.div`
         margin: 8px 0;
     }
 
-`;
+`
 
 const NewsLetterInputContainer = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     margin-bottom: 12px;
-`;
+`
 
 const NewsLetterInput = styled.input`
     border:none;
@@ -227,7 +245,7 @@ const NewsLetterInput = styled.input`
     width: 256px;
     background-color: ${props => props.theme.light};
 
-`;
+`
 const NewsLetterButton = styled.img`
     width: 32px;
     height: 32px;
@@ -237,75 +255,93 @@ const NewsLetterButton = styled.img`
         width: 28px;
         height: 28px;
     }
-`;
+`
 
 const HomeBody = () => {
-    const [state, setState] = useState({articles: []});
+  const [state, setState] = useState({ articles: [] })
+  const [email, setEmail] = useState("")
 
-    let mainArticlesCount = 3;
-
-    if (window.innerWidth > parseInt(device.mobileL.split('px')[0].split(' ')[1]))
-        mainArticlesCount = 6;
-
-    useEffect(() => {
-        setState({articles: articlesList.allArticles});
-    }, []);
-
-    return (
-        <HomeBodyContainer>
-            <LatestPostsTitle>New Blog Posts</LatestPostsTitle>
-            <PostsContainer>
-
-                {
-                    state.articles.slice(0, mainArticlesCount).map((article, index) => {
-                        return <PostContainer key={index}>
-                            <PostImage src={(article !== undefined ? article.imgUrl : '')}/>
-                            <PostCategory>{(article !== undefined ? article.topic : '')}</PostCategory>
-                            <PostTitle>{(article !== undefined ? article.title : '')}</PostTitle>
-                            <PostRead
-                                href={'?article=' + (article !== undefined ? article.id : '')}>Read
-                                Article</PostRead>
-                        </PostContainer>
-                    })
-                }
+  let mainArticlesCount = 3
 
 
-            </PostsContainer>
+  useEffect(() => {
+    initDB()
+    if (window.innerWidth > parseInt(device.mobileL.split("px")[0].split(" ")[1]))
+      mainArticlesCount = 6
+    setState({ articles: articlesList.allArticles })
+  }, [])
 
-            <NewsLetterContainer>
-                <NewsLetterTitleContainer>
-                    <NewsLetterTitle>Want to keep yourself updated?</NewsLetterTitle>
-                    <NewsLetterSubHeader>Only important stuff, no spam 🚫</NewsLetterSubHeader>
-                </NewsLetterTitleContainer>
-                <NewsLetterCard>
-                    <NewspaperImage/>
-                    <NewsLetterSubscribe>Subscribe to my newsletter</NewsLetterSubscribe>
-                    <NewsLetterInputContainer>
-                        <NewsLetterInput placeholder={'Your Email Address'}/>
-                        <NewsLetterButton src={newspaper}/>
-                    </NewsLetterInputContainer>
-                </NewsLetterCard>
-            </NewsLetterContainer>
+  return (
+    <HomeBodyContainer>
+      <LatestPostsTitle>New Blog Posts</LatestPostsTitle>
+      <PostsContainer>
 
-            <PostsContainer>
-
-                {
-                    state.articles.slice(mainArticlesCount, mainArticlesCount + 3).map((article, index) => {
-                        return <PostContainer key={index}>
-                            <PostImage src={(article !== undefined ? article.imgUrl : '')}/>
-                            <PostCategory>{(article !== undefined ? article.topic : '')}</PostCategory>
-                            <PostTitle>{(article !== undefined ? article.title : '')}</PostTitle>
-                            <PostRead
-                                href={'?article=' + (article !== undefined ? article.id : '')}>Read
-                                Article</PostRead>
-                        </PostContainer>
-                    })
-                }
+        {
+          state.articles.slice(0, mainArticlesCount).map((article, index) => {
+            return <PostContainer key={index}>
+              <PostImage src={(article !== undefined ? article.imgUrl : "")}/>
+              <PostCategory>{(article !== undefined ? article.topic : "")}</PostCategory>
+              <PostTitle>{(article !== undefined ? article.title : "")}</PostTitle>
+              <PostRead
+                href={"articles/" + (article !== undefined ? article.topic.toLowerCase().split(" ").join("-") + "/" + article.id : "")}>Read
+                Article</PostRead>
+            </PostContainer>
+          })
+        }
 
 
-            </PostsContainer>
-        </HomeBodyContainer>
-    );
+      </PostsContainer>
+
+      <NewsLetterContainer>
+        <NewsLetterTitleContainer>
+          <NewsLetterTitle>Want to keep yourself updated?</NewsLetterTitle>
+          <NewsLetterSubHeader>Only important stuff, no spam <span role={'img'} aria-label={'prohibited'}>🚫</span></NewsLetterSubHeader>
+        </NewsLetterTitleContainer>
+        <NewsLetterCard>
+          <NewspaperImage/>
+          <NewsLetterSubscribe>Subscribe to my newsletter</NewsLetterSubscribe>
+          <NewsLetterInputContainer>
+            <NewsLetterInput placeholder={"Your Email Address"} onChange={(event => setEmail(event.target.value))}
+                             value={email}/>
+            <NewsLetterButton src={newspaper} onClick={() => {
+              if (database !== undefined && /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+                database.ref("newsletter/")
+                  .push({
+                    subscribed: false,
+                    requested: true,
+                    email: email
+                  })
+                  .then(() => {
+                    setEmail("Subscribed!")
+                    setTimeout(() => {
+                      setEmail("")
+                    }, 4000)
+                  })
+              }
+            }}/>
+          </NewsLetterInputContainer>
+        </NewsLetterCard>
+      </NewsLetterContainer>
+
+      <PostsContainer>
+
+        {
+          state.articles.slice(mainArticlesCount, mainArticlesCount + 3).map((article, index) => {
+            return <PostContainer key={index}>
+              <PostImage src={(article !== undefined ? article.imgUrl : "")}/>
+              <PostCategory>{(article !== undefined ? article.topic : "")}</PostCategory>
+              <PostTitle>{(article !== undefined ? article.title : "")}</PostTitle>
+              <PostRead
+                href={"articles/" + (article !== undefined ? article.topic.toLowerCase().split(" ").join("-") + "/" + article.id : "")}>Read
+                Article</PostRead>
+            </PostContainer>
+          })
+        }
+
+
+      </PostsContainer>
+    </HomeBodyContainer>
+  )
 }
 
-export default HomeBody;
+export default HomeBody

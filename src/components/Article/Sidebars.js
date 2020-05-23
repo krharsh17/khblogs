@@ -1,22 +1,40 @@
-import React, {useEffect, useState} from 'react';
-import styled from "styled-components";
+import React, { useEffect, useState } from "react"
+import styled from "styled-components"
 import {
-    EmailIcon,
-    EmailShareButton,
-    FacebookIcon,
-    FacebookShareButton,
-    LinkedinIcon,
-    LinkedinShareButton,
-    RedditIcon,
-    RedditShareButton,
-    TelegramIcon,
-    TelegramShareButton,
-    TwitterIcon,
-    TwitterShareButton
-} from "react-share";
-import unliked from '../../images/like_light.svg';
-import liked from '../../images/like_dark.svg';
-import firebase from "../Firebase";
+  EmailIcon,
+  EmailShareButton,
+  FacebookIcon,
+  FacebookShareButton,
+  LinkedinIcon,
+  LinkedinShareButton,
+  RedditIcon,
+  RedditShareButton,
+  TelegramIcon,
+  TelegramShareButton,
+  TwitterIcon,
+  TwitterShareButton
+} from "react-share"
+import unliked from "../../images/like_light.svg"
+import liked from "../../images/like_dark.svg"
+import { getFirebase } from "../Firebase"
+
+let database
+
+const initDB = (callback) => {
+  if (database === undefined) {
+    const lazyApp = import("firebase/app")
+    const lazyDatabase = import("firebase/database")
+
+    Promise.all([lazyApp, lazyDatabase]).then(([firebase]) => {
+      database = getFirebase(firebase).database()
+      if (callback !== undefined) {
+        callback()
+      }
+    })
+  } else if (callback !== undefined) {
+    callback()
+  }
+}
 
 const LikePanel = styled.div`
   display: flex;
@@ -29,7 +47,7 @@ const LikePanel = styled.div`
   margin: 4px 0;
   color: ${props => props.theme.dark};
 
-`;
+`
 
 const LikeImage = styled.img`
   width: 72px;
@@ -50,41 +68,42 @@ const LikeImage = styled.img`
     border: 1px solid #aa2729;
   }
 
-`;
+`
 
 const LikeButton = (props) => {
-    const [likes, setLikes] = useState('');
-    const [isLiked, setLiked] = useState(false);
+  const [likes, setLikes] = useState("")
+  const [isLiked, setLiked] = useState(false)
 
-    console.log(props.id);
+  useEffect(() => {
 
-    useEffect(() => {
-        firebase.database().ref('articles/' + props.id + '/likes')
-            .once('value')
-            .then(snapshot => {
-                setLikes(snapshot.val() !== null ? snapshot.val() : 0);
-            });
-    }, []);
+    initDB(() => {
+      database.ref("articles/" + props.id + "/likes")
+        .once("value")
+        .then(snapshot => {
+          setLikes(snapshot.val() !== null ? snapshot.val() : 0)
+        })
+    })
+
+  }, [props.id])
 
 
-    function like() {
-        setLikes(likes + 1);
-        if (!isLiked)
-            setLiked(true);
-        firebase.database().ref('articles/' + props.id + '/likes')
-            .transaction((currentLikes) => {
-                return (currentLikes || 0) + 1;
-            }).then(r => {
+  const like = () => {
+    setLikes(likes + 1)
+    if (!isLiked)
+      setLiked(true)
+    if (database !== undefined)
+      database.ref("articles/" + props.id + "/likes")
+        .transaction((currentLikes) => {
+          return (parseInt(currentLikes.toString()) || 0) + 1
+        })
+  }
 
-        });
-    }
-
-    return (
-        <LikePanel>
-            <LikeImage src={isLiked ? liked : unliked} onClick={like}/>
-            {likes + ' likes'}
-        </LikePanel>
-    );
+  return (
+    <LikePanel>
+      <LikeImage src={isLiked ? liked : unliked} onClick={like}/>
+      {likes + " likes"}
+    </LikePanel>
+  )
 }
 
 const ShareButtonContainer = styled.div`
@@ -95,7 +114,7 @@ const ShareButtonContainer = styled.div`
     height: auto;
     justify-content: center;
     margin: 8px 0;
-`;
+`
 
 const SharePanel = styled.div`
     justify-content: center;
@@ -107,27 +126,33 @@ const SharePanel = styled.div`
     font-size: 16px;
     font-weight: bold;
 
-`;
+`
 
 const ShareButtons = () => {
-    const iconSize = 44;
-    return (
-        <SharePanel>
-            Share this article
-            <ShareButtonContainer>
-                <EmailShareButton style={{marginRight: '4px'}} url={window.location.href}><EmailIcon
-                    size={iconSize}/></EmailShareButton>
-                <FacebookShareButton style={{marginRight: '4px'}} url={window.location.href}><FacebookIcon
-                    size={iconSize}/></FacebookShareButton>
-                <TwitterShareButton style={{marginRight: '4px'}} url={window.location.href}><TwitterIcon size={iconSize}/></TwitterShareButton>
-                <LinkedinShareButton style={{marginRight: '4px'}} url={window.location.href}><LinkedinIcon
-                    size={iconSize}/></LinkedinShareButton>
-                <TelegramShareButton style={{marginRight: '4px'}} url={window.location.href}><TelegramIcon
-                    size={iconSize}/></TelegramShareButton>
-                <RedditShareButton style={{marginRight: '4px'}} url={window.location.href}><RedditIcon
-                    size={iconSize}/></RedditShareButton>
-            </ShareButtonContainer>
-        </SharePanel>);
+  const iconSize = 44
+  const iconStyle = { marginRight: "4px" }
+  let shareLink = "https://blog.krharsh17.vision";
+  useEffect(() => {
+    shareLink = window.location.href
+  })
+  return (
+    <SharePanel>
+      Share this article
+      <ShareButtonContainer>
+        <EmailShareButton style={iconStyle} url={shareLink}><EmailIcon
+          size={iconSize}/></EmailShareButton>
+        <FacebookShareButton style={iconStyle} url={shareLink}><FacebookIcon
+          size={iconSize}/></FacebookShareButton>
+        <TwitterShareButton style={iconStyle} url={shareLink}><TwitterIcon
+          size={iconSize}/></TwitterShareButton>
+        <LinkedinShareButton style={iconStyle} url={shareLink}><LinkedinIcon
+          size={iconSize}/></LinkedinShareButton>
+        <TelegramShareButton style={iconStyle} url={shareLink}><TelegramIcon
+          size={iconSize}/></TelegramShareButton>
+        <RedditShareButton style={iconStyle} url={shareLink}><RedditIcon
+          size={iconSize}/></RedditShareButton>
+      </ShareButtonContainer>
+    </SharePanel>)
 }
 
-export {LikeButton, ShareButtons};
+export { LikeButton, ShareButtons }

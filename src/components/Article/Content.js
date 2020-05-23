@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import {device} from "../Global";
+import styled from "styled-components"
+import { device } from "../Global"
 
 const ArticleTitle = styled.p`
     position: relative;
@@ -11,7 +11,7 @@ const ArticleTitle = styled.p`
     line-height: 48px;
     text-align: start;
     color: ${props => props.theme.dark};
-`;
+`
 
 const ArticleTextSpan = styled.p`
     text-align: start;
@@ -25,7 +25,7 @@ const ArticleTextSpan = styled.p`
     &:hover {
         background-size: 100% 88%;
     }
-`;
+`
 
 const ArticleTextItalic = styled.span`
     text-align: start;
@@ -36,7 +36,7 @@ const ArticleTextItalic = styled.span`
     white-space: pre-wrap;
     font-family: 'Source Sans Pro', sans-serif;
     font-style: italic;
-`;
+`
 
 const ArticleTextStrong = styled.span`
     text-align: start;
@@ -46,7 +46,7 @@ const ArticleTextStrong = styled.span`
     color: ${props => props.theme.dark};
     white-space: pre-wrap;
     font-family: 'Source Sans Pro', sans-serif;
-`;
+`
 
 const ArticleLink = styled.a`
     background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
@@ -61,7 +61,7 @@ const ArticleLink = styled.a`
         background-size: 100% 1.2em;
         color: #1B1926;
     }
-`;
+`
 
 
 const ArticleImage = styled.img`
@@ -72,7 +72,7 @@ const ArticleImage = styled.img`
         width: 100%;
     }
 
-`;
+`
 
 
 const ArticleCode = styled.div`
@@ -90,7 +90,7 @@ const ArticleCode = styled.div`
     @media ${device.tablet}{
         width: 90%;
     }
-`;
+`
 
 const ArticleQuote = styled.div`
     border-left: 16px solid ${props => props.theme.dark50};
@@ -112,7 +112,7 @@ const ArticleQuote = styled.div`
     @media ${device.tablet}{
         width: 90%;
     }
-`;
+`
 
 const ArticleH1 = styled.h1`
     text-align: left;
@@ -120,7 +120,7 @@ const ArticleH1 = styled.h1`
     margin-top: 48px;
     font-family: 'Source Sans Pro';
 
-`;
+`
 
 const ArticleH2 = styled.h2`
     text-align: left;
@@ -128,7 +128,7 @@ const ArticleH2 = styled.h2`
     margin-top: 48px;
     font-family: 'Source Sans Pro';
 
-`;
+`
 
 const ArticleContentContainer = styled.div`
     padding: 0 5vw;
@@ -140,7 +140,7 @@ const ArticleContentContainer = styled.div`
         width: 50vw;
     }
 
-`;
+`
 
 const ArticleAdSpace = styled.div`
     position: relative;
@@ -157,7 +157,7 @@ const ArticleAdSpace = styled.div`
         position: sticky;
         top: 20px;
     }
-`;
+`
 
 const ArticleBody = styled.div`
     flex-direction: column;
@@ -175,20 +175,20 @@ const ArticleBody = styled.div`
         justify-content: space-evenly;
     }
 
-`;
+`
 
 export {
-    ArticleTitle,
-    ArticleTextSpan,
-    ArticleLink,
-    ArticleImage,
-    ArticleCode,
-    ArticleH1,
-    ArticleH2,
-    ArticleContentContainer,
-    ArticleAdSpace,
-    ArticleBody,
-    ArticleQuote,
-    ArticleTextItalic,
-    ArticleTextStrong
-};
+  ArticleTitle,
+  ArticleTextSpan,
+  ArticleLink,
+  ArticleImage,
+  ArticleCode,
+  ArticleH1,
+  ArticleH2,
+  ArticleContentContainer,
+  ArticleAdSpace,
+  ArticleBody,
+  ArticleQuote,
+  ArticleTextItalic,
+  ArticleTextStrong
+}

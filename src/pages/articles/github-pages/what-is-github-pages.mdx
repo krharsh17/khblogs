@@ -1,0 +1,72 @@
+---
+title: What is GitHub Pages?
+path: /github-pages/what-is-github-pages
+date: 2020-05-15
+topic: GitHub Pages
+time: 4 min read
+---
+
+A user-friendly guide to the world's largest free static web hosting
+
+![image](https://source.unsplash.com/XtUd5SiX464/1600x900)
+
+As part of the [GitHub Pages 101 series](https://blog.krharsh17.vision/github-pages/roadmap) here's the first article that describes the what and why of the GitHub Pages.
+
+# GitHub Pages
+
+GitHub Pages is a web hosting service offered by GitHub, which allows you to host your websites on a github.io subdomain. The coolest thing about this service is that it integrates directly with your codebase, ie. your code's repository, so deploying a site on GitHub Pages means simply pushing your files onto your GitHub Repository, and the GitHub Pages system then takes your bunch of files, optionally passes them through a build sequence and then deploys it to the github.io subdomain assigned to your repo.
+
+## Wait... What?
+The last words might have sounded complex too, and that somehow contradicts the intent of this series, which is to remove complexity. So we'll dive deeper into the details in a while. Before that, here are a few things to remember about Pages.
+
+# What GitHub Pages is meant for:
+- Personal Websites (portfolios, profiles, blogs)
+- Project Websites (A website that describes how a library you built can be used, or an interactive demo of your application/package/module/library etc)
+- Documentation Websites (A website that contains the documentation for a software)
+- Anything else that is not commercial/security-sensitive
+
+# What GitHub Pages is NOT meant for:
+- E-commerce websites
+- Webpages involving passwords/credit card info
+- Any website/code that involves secrets, or confidential data such as keys/tokens/hashes etc
+
+Now that our requirements are well laid out, let's dive deeper into how Pages works.
+
+# Tearing Pages Down
+To understand why those specific use cases have been set, we need to analyze how Pages works internally. Before we go into the deployment process, important things to be noted are
+
+- Pages deploys an entire repository as a whole, so all files inside the repository are exposed to the client. This is why no sensitive data should be put into the repo.
+- The homepage for your Pages-hosted website would be the index.html file, meaning that Pages looks for the index.html file in your repo's root directory, and hosts it onto your github.io subdomain.
+
+If I had a repo by the name krharsh17/test, given that krharsh17 is my GitHub username, and if I were to use this repo with GitHub Pages, I would need to create an index.html in the '/' directory of the repo, or the root of the repo. Then, my website, once deployed, would be accessible on the URL: [https://krharsh17.github.io/test](https://krharsh17.github.io/test)
+
+![image](https://cdn-images-1.medium.com/max/1000/1*jiO8ST263w5Iz7m1DbcQxQ.png)
+
+# Pages Deployment
+The deployment of a website on Pages happens in the following way:
+
+## Collection of code
+Pages collects all of the files stored in your repository, including all files that are HTML/CSS/JS and all files that are not HTML/CSS/JS. This is why no confidential files should be stored on the repository
+
+## [OPTIONAL] Static site generation
+This step is optional, depending on whether you opt for it or not. What happens here exactly is that your code is run through a static site generator, to build the website directly from markup/text files. GitHub Pages uses Jekyll as its static site generator by default, and to avoid it from being used on a repo not intended to be used with it, a .nojekyll file has to be present in the repo.
+
+## Deployment to the domain
+Once the static site generation has been taken care of, the generated/original files from the repository are then deployed onto the domain relevant to the repository. Now you can access your index.html file on the github.io URL provided to your repo, and this file will be able to link to and access all files that are present in the repo by proper relative addressing. We'll dive deeper into how domains are allotted to repos in a later section.
+
+So by this explanation, it should be obvious by now that Pages is a static web hosting provider, meaning that no server-side code can be run on it. Even the multipurpose .htaccess file is not supported by Pages. However, most project/personal websites do not require server-side coding, so for the average user, Pages is still quite useful.
+
+# GitHub Pages in numbers
+Now that we've looked at the functionality behind Pages, let's have a look at its usage caps
+
+- Recommended source code size: 1 GB
+- Maximum allowed source code size: 100 GB
+- Maximum allowed deployment size: 1 GB
+- Monthly bandwidth limit: 100GB per month
+- Pages build frequency limit: 10 builds per hour
+
+These figures ensure the best performance for small scale personal or project websites and are sufficient enough for any beginner who wants to be free of any server-side coding and still be able to try out his frontend in a production environment.
+
+# Summing Up
+
+So in a nutshell, GitHub Pages is the perfect backend for your static websites which are meant for personal or small-scale professional use. It is not meant to be used for commercial purposes, and it does not allow any server-side coding, meaning that it is meant to just serve your static HTML files on the web as they normally are served when you open them locally in a browser. This, however, holds a lot of possibilities, as many frameworks which create static builds can be used to deploy responsive PWAs quickly, and documentation for literally any entity can be generated from markdown files instantly with appropriate theming.

@@ -1,0 +1,84 @@
+---
+title: Creating a GitHub Page Website
+path: /github-pages/creating-a-website
+date: 2020-05-18
+topic: GitHub Pages
+time: 4 min read
+---
+
+A user-friendly guide to the world's largest free static web hosting
+
+![image](https://source.unsplash.com/xpo5BggQo3E/1600x900)
+
+Configuring a website on GitHub Pages is one of the easiest things to do. I'm gonna chart the process out in simple words -
+
+## Develop a website
+To deploy a website on Pages, you would obviously need a website (duh!). The reason why I've put this obvious thing on the list is to stress on the fact that you need a static website, not a server-side rendered one. By static, I mean a website which is composed ONLY of HTML, CSS & JS. If you are using a JS framework, you will need to build the source code into static HTML before deploying.
+
+## Create a GitHub Repo
+Since Pages is offered by GitHub, so we're going to need a GitHub repository to store our HTML files. Creating a repo is quite simple, and usually involves the following steps:
+
+- Click on the + icon on the upper right corner
+
+![image](https://cdn-images-1.medium.com/max/1000/1*lPvtzrYrsjfyFJ_6_F1peg.png)
+
+- Choose New Repository
+
+![image](https://cdn-images-1.medium.com/max/1000/1*x82Bd_Diep686G3v50JltQ.png)
+
+- Fill out the details for your repository and click the create button
+
+![image](https://cdn-images-1.medium.com/max/1000/1*jFw1VNAh5jmJkKjmmAkzIw.png)
+
+That's it! You'll have a new repository ready to be used.
+
+## Push the code
+
+Now as the repo is ready, let's send some code over! Navigate to your local project folder and open up a git bash. Then run the following set of commands
+
+```
+# initialize git repo locally
+git init
+
+# link the local repo with your github repo
+git remote add origin https://github.com/[username]/[reponame].git
+
+# add all files to git
+git add .
+
+# create a commit
+git commit -m "Initial commit"
+
+# push it over!
+git push origin master
+```
+Note that you can run these commands on a terminal too if you have configured your git's path correctly.
+
+Now, if you open the repository on GitHub, it'll show you your files. Make sure that the homepage is saved by the name index.html and is not placed inside any directory, it should be in the root of the repo
+
+## Setup Pages
+
+All that we did till now was to prepare the repo for being served via Pages. Now comes the relevant part, of configuring pages on the repo. Follow these steps:
+
+1. Go to your GitHub repo's page
+2. Navigate to the settings section
+
+![image](https://cdn-images-1.medium.com/max/1000/1*PYP_3mFQZCMBBkL5jHTb1w.png)
+
+3. Scroll down to the GitHub Pages subsection
+
+![image](https://cdn-images-1.medium.com/max/1000/1*1wnTwEiwHfE6XjmnwR2Dsg.png)
+
+4. Click on the dropdown box under Source, currently showing none, and choose master branch
+
+![image](https://cdn-images-1.medium.com/max/1000/1*ivTkmq5YEXErCwN2TrbQfA.png)
+
+That's all! Your repo will not be built upon, and the deployed to the domain allotted to you.
+
+![image](https://cdn-images-1.medium.com/max/1000/1*EfGUzK1QcA3mZQk-2URKVg.png)
+
+Note that I have configured a custom domain, so my website is served at that domain. Normally, GitHub Pages provides a generic subdomain to every user, which will be displayed to you when you configure your site
+
+---
+
+So that was all needed to set up a GitHub Pages website! But that's not all about Pages. We'll be covering source selection and domain configuration in the following tutorials so that you may be able to ship quality websites with nothing but a simple server offered by Pages!
