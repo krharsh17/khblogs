@@ -12,6 +12,7 @@ import { CommentBox, Comments } from "./Article/Comments"
 import { LikeButton, ShareButtons } from "./Article/Sidebars"
 import { Helmet } from "react-helmet"
 import favicon from "../images/favicon.ico"
+import Loader from "./Loader"
 import "./layout.css"
 import {
   ArticleAdSpace,
@@ -54,6 +55,7 @@ const ArticleLayout = ({ children }) => {
   const [darkMode, setDarkMode] = useState(false)
   const [data, setData] = useState({ title: "" })
   const [theme, setTheme] = useState(lightTheme)
+  const [appReady, setAppReady] = useState(false);
 
   const raw = useStaticQuery(graphql`
     query {
@@ -80,6 +82,7 @@ const ArticleLayout = ({ children }) => {
     })
     const lsDark = localStorage.getItem("dark") === "true"
     toggleDarkMode(lsDark)
+    setAppReady(true)
 
 
   }, [raw.allMdx.nodes])
@@ -107,6 +110,7 @@ const ArticleLayout = ({ children }) => {
         <meta property="og:image" content={data.image}/>
         <meta property="og:description" content=""/>
       </Helmet>
+      <Loader appReady={appReady}/>
       <TopNav title={data.title} darkMode={darkMode} toggleDarkMode={toggleDarkMode}/>
       <ArticleHeader>
         <HeaderBG/>

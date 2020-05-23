@@ -4,6 +4,7 @@ module.exports = {
     description: `A collection of all of my written content`,
     author: `@krharsh17`
   },
+  pathPrefix: "/khblogs",
   plugins: [
     `gatsby-plugin-react-helmet`,
     {
@@ -42,7 +43,8 @@ module.exports = {
         name: `pages`,
         path: `${__dirname}/src/pages/`
       }
-    }
+    },
+
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,

@@ -131,7 +131,7 @@ const SharePanel = styled.div`
 const ShareButtons = () => {
   const iconSize = 44
   const iconStyle = { marginRight: "4px" }
-  let shareLink = "https://blog.krharsh17.vision";
+  let shareLink = "https://blog.krharsh17.vision"
   useEffect(() => {
     shareLink = window.location.href
   })

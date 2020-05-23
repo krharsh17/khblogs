@@ -8,15 +8,17 @@ import { HomeContainer, HomeNav } from "../components/Home/Nav"
 import { TopArticles } from "../components/Home/Header"
 import HomeBody from "../components/Home/Body"
 import HomeFooter from "../components/Home/Footer"
+import Loader from "../components/Loader"
 
 const IndexPage = () => {
   const [darkMode, setDarkMode] = useState(false)
+  const [appReady, setAppReady] = useState(false);
   const [theme, setTheme] = useState(lightTheme)
 
   useEffect(() => {
     const lsDark = localStorage.getItem("dark") === "true"
     toggleDarkMode(lsDark)
-
+    setAppReady(true);
   }, [])
 
   const toggleDarkMode = (darkModeBool) => {
@@ -37,6 +39,7 @@ const IndexPage = () => {
       <Layout>
         <ThemeProvider theme={theme}>
           <HomeContainer>
+            <Loader appReady={appReady}/>
             <HomeNav darkMode={darkMode} toggleDarkMode={toggleDarkMode}/>
             <TopArticles/>
             <HomeBody/>
