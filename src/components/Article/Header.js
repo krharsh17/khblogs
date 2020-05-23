@@ -69,12 +69,12 @@ const HeaderProfile = styled.img`
     right: 24px;
 `
 
-const LogoImg = styled.div`
+const LogoImg = styled.img`
     position: absolute;
     top: 16px;
     left: 24px;
-    z-index: 2;
-    height: 40px;
+    height: 48px;
+    z-index: 20;
 `
 
 const down = keyframes`
@@ -109,8 +109,7 @@ const HeaderBG = () => {
     <div style={{ height: "100vh", width: "100vw" }}>
       <HeaderBGMask/>
       <HeaderBGImg src={bg}
-                   alt=''
-                   className='header-bg-img'/>
+                   alt=''/>
     </div>
   )
 }
