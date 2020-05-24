@@ -1,0 +1,131 @@
+---
+title: Comparing the most popular React toolchains
+path: /articles/javascript/gatsby-vs-next-vs-create-react-app-comparison
+date: 2020-05-24
+topic: JavaScript
+time: 2 min read
+intro: When vanilla JS beginners start to feel that they have become mature enough to play with some serious code now, they usually head to frameworks. I've seen newbies use as heavy scaffolds as Angular to create basic forms.
+imgUrl: https://source.unsplash.com/cI-Ctf3PRPs/800x800
+articleNumber: 2
+---
+
+A beginner's take on the most popular React toolchains out in the market.
+
+![image](https://source.unsplash.com/cI-Ctf3PRPs/1600x900)
+
+When vanilla JS beginners start to feel that they have become mature enough to play with some serious code now, they usually head to frameworks. I've seen newbies use as heavy scaffolds as Angular to create basic forms. And this compels me to write a piece on why you shouldn't do that, and how you should judge a piece of code before using it.
+
+***
+
+No matter whether you've just begun coding or you have had years of experience building applications, not having carried out proper research can seriously damage the present as well as the future of any project that you undertake. And this research includes choosing the most suited languages, frameworks and toolchains for your project, depending on the requirements at hand.
+
+This article is going to cover the entire process of choosing the best candidate among the top 3 ReactJS based toolchains - create-react-app, Next.js & GatsbyJS
+
+![image](https://cdn.shopify.com/s/files/1/2391/5185/articles/ULTIMATE_List_of_React_Blogs_and_Sites_that_Allow_Guest_Blogging_wallpaper_1600x.png?v=1564838086)
+
+# Whats the difference?
+
+Before we begin benchmarking each toolchain against the various use-cases that they're all built for, we need to understand what makes them different from one another? After all, they all are built on top of ReactJS, and use React under the hood to publish web-apps. Then why are they not used interchangeably with one another?
+
+For starters, each of the three candidates are _toolchains_ which means that they are only relevant to packaging and publishing code, and have no absolutely no role in altering the way in which the app is designed. This means that these toolchain come into play after a web app's structural design is ready. However, it is important to decide on a toolchain as soon as possible because every toolchain has its own set of requirements to be met by the code design. And if this is not planned properly prior to development, then it poses a risk of sending the dev team into a refactoring phase, which can sometimes last longer than even the initial development phase.
+
+![image](https://media.vlpt.us/post-images/ryu/30c42cd0-35bf-11ea-a2cb-e3f4a6de3397/-2020-01-13-1.42.57.png)
+
+## create-react-app
+This was built by facebook, the original makers of the React framework. The official docs state this to be the easiest way of creating a React SPA if you're someone who is trying out React for the first time.
+*[Learn create-react-app](https://create-react-app.dev/docs/getting-started/)*
+
+![image](https://sergiodxa.com/static/slides/nextjs.png)
+
+## Next.js
+This is a popular toolchain for building React apps. However, rather than exporting SPAs (Single Page Applications), Next.js exports a server-side rendered web app, which can be deployed on a server to allow server-side rendering of your app, which eliminates a lot of issues that are cause by client-side rendered apps such as inability to handle external links, limited SEO support etc.
+*[Learn Next.js](https://nextjs.org/docs/getting-started)*
+
+![image](https://stevencotterill.com/static/a8c8c75ea310f6d3f91c681946646114/bc8e0/website-rebuilt-in-gatsbyjs.png)
+
+## GatsbyJS
+This is a toolchain whose popularity has been rising quite lately. It is backed by an awesome collection of community-contributed content including blogs, tutorials, plugins and much more. It allows pre-rendering a website, which means that the React code is directly built into static HTML + JS files, allowing them to be served via static servers, achieve great levels of performance, and also enabling SEO & SMO.
+*[Learn GatsbyJS](https://www.gatsbyjs.org/docs/)*
+
+# Let's begin!
+
+Instead of setting out high quality benchmarks such as rendering time, loading time etc, I will be comparing these frameworks against their most common use-cases. This sort of comparison generally tends to be more friendly for beginners.
+
+ So here's the list of general use-cases for a React web app -
+- Simple, static web app
+- Large websites with dynamic content, such as [Medium](https://medium.com)
+- Purely Single Page Apps, such as Gmail, GDrive
+- Complex isomorphic apps, which involve both CSR & SSR, such as Twitter, Facebook
+
+![image](https://www.digitalvidya.com/wp-content/uploads/2019/03/personal-blog.jpg)
+
+# Simple, static web app
+A static web app generally requires to be:
+- Compact, with not more than 15-20 webpages
+- SEO-friendly, to allow better discovery on the web
+
+With static web apps, updates don't necessarily require to be fast, however, fast updates will always be a major pro.
+
+For static websites, Gatsby is way better than any of the other contenders. With the awesome pre-optimized starters, beginner friendly documentation, huge support for CMS plugins and pre-rendering of all pages, Gatsby can help you set up a custom website for a routine task such as a blog, or a product landing page quite quick & smooth. The pre-rendered HTML built by Gatsby can be deployed anywhere, with [GitHub Pages](https://blog.krharsh17.vision/articles/github-pages/roadmap) & Netlify being the top choices for static site developers.web
+
+However, one important point that such comparisons often miss out on is that Gatsby creates an renders every single page of your app to static HTML while building. This means that all of your 15-20 webpages are sequentially created by the toolchain while building the app. It is quite evident that this can become a major issue if the site grows large enough, given that some of the CD build environments (Yep, [I'm talking about Netlify](https://www.netlify.com/blog/2020/02/25/gatsby-build-speed-improvements-with-parallel-image-processing/)) are notoriously slow.
+
+Deploying a Next.js app for a 15-20 pages website would be an overkill, in my humble opinion. Unnecessary server side rendering will decrease your web-app's performance, and [you'd certainly not want to lose audience just because your blog loads slow.](https://neilpatel.com/blog/speed-is-a-killer/)
+
+**Verdict**: Gatsby
+**Reason**: Optimized performance, developer experience and build time.
+
+![image](https://thepracticaldev.s3.amazonaws.com/i/6hqmcjaxbgbon8ydw93z.png)
+
+# Large website with dynamic content
+
+Now that your website has started to grow, and you've shifted to something more interactive, you'll slowly realize that you're spending a lot more time while watching your app build after every upgrade if you continue to use Gatsby. Also, you will start facing problems with loading dynamic content easily ([Gatsby confuses Firebase](https://github.com/firebase/firebase-js-sdk/issues/2222#issuecomment-538072948)). To handle these things better, it would be easier to shift to Next.js as [Gatsby is explicitly a static website generator](https://www.mediacurrent.com/blog/what-is-gatsbyjs/)
+
+On a sidenote, it is practically impossible to compile dynamic changes to a static website. So you either need to use an external backend, or handle simple logic through SSR-based Next.js
+
+**Verdict**: Next.js
+**Reason**: Faster content updates, pure SSR
+
+![image](https://cdn.business2community.com/wp-content/uploads/2020/04/LWbQEPhqHAAWfsmY_OdUt687xf95tUpxg-mIDKphdOAcTgg6jNBVUvg_8NAHP-8YQSik2Y97PpcCoMfPBhNbitXqRdrluzyui1n0wHx60gamYwaNYh5iE0uZaqIFC3F5R0NNtOH.png)
+
+# Single Page Applications
+
+SPAs generally dont require to be SEO optimized, or handle external links. They are usually meant to be heavily client-side rendered, to carry out client based operations. External links in an SPA can still be implemented using an appropriate server environment. The most important requirement for an SPA is to be fast and responsive to the user.js
+
+In this use-case, Gatsby & Next both level out. This is because of the way that they are designed.
+
+Apart from being a static site generator, Gatsby has a nice little feature called _React injection_ using which, static sides created by Gatsby are injected with React framework upon loading. This means that it is not completely static, and it still has access to the most robust features of React such as virtual DOM. This is what greatly increases the performance of sites made using Gatsby.
+
+Also worth noting that Next.js too has a nice little feature, which allows it to serve static as well as dynamic webpages. This means that everytime an app is built in Next.js with multiple pages, all those pages are assessed by the Next frameworks and pages which do not have any dynamic content are generated & served statically. This reduces the [interactive time delay](https://davidea.st/articles/measuring-server-side-rendering-performance-is-tricky) associated with Next and thus improves its performance on the whole.
+
+**Verdict**: Next AND Gatsby
+**Reason**: Comparable features & metrics in this use case
+
+![image](https://cdn.neow.in/news/images/uploaded/2019/07/1563214183_twitter_neowin.jpg)
+
+# Isomorphic Apps
+
+Isomorphic or Universal apps [(I know they're different)](https://medium.com/@ghengeveld/isomorphism-vs-universal-javascript-4b47fb481beb) generally involve a lot of dynamic content. Almost all of the content on giants such as Twitter & Facebook is dynamic. This simply means that they can not function even with a client side React injection such as Gatsby's. Although Gatsby can still handle this, but it is beaten out by Next in some cases such as first meaningful paint. Also, SEO for a large isomorphic app is much more easier in Next than in Gatsby. So Next is the clear winner here.
+
+**Verdict**: Next.js
+**Reason**: Better SEO, public accessibility, and performance optimization
+
+# The Final Verdict
+
+There can not be one answer to what's the best toolchain for React. It always depends on how you plan to use them. Here's a list of most common use-cases best suited to each toolchain:
+
+## **Gatsby**
+- Blog
+- Landing Pages
+- Any other website with static content
+## **Next**
+- Social Media-like Apps
+- Forum-like Apps
+- Real time interactive Apps
+- Apps that require syncing content between client in real time
+## **create-react-app**
+- Learning
+
+Thanks for reading!
+
+

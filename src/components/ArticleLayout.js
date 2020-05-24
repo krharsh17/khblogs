@@ -67,6 +67,8 @@ const ArticleLayout = ({ children }) => {
               date(formatString: "MMMM DD, YYYY")
               topic
               time
+              intro
+              imgUrl
             }
           
         }
@@ -101,7 +103,7 @@ const ArticleLayout = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
 
-      <SEO title={data.title}/>
+      <SEO title={data.title} description={data.intro} img={data.imgUrl} />
       <Helmet>
         <link rel="icon" href={favicon}/>
         <meta property="og:type" content="article"/>

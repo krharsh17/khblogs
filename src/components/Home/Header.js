@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { device } from "../Global"
-import articlesList from "../../content/articles-list.json"
+import { graphql, useStaticQuery } from "gatsby"
 
 const TopArticlesRow = styled.div`
     display: flex;
@@ -78,22 +78,25 @@ const MainArticleText = styled.div`
 
 const MainArticleImage = styled.img`
     width: 100%;
-    height: auto;
+    height: 400px;
     border-radius: 4px;  
     margin-bottom: 20px;  
+    object-fit: cover;
+    object-position: center;
     
     @media ${device.laptop} {
         max-width: 700px;
-        height: auto;
         border-radius: 4px;  
         margin-bottom: 20px;
     }
 `
 
 const SideArticleImage = styled.img`
-        width: 128px;
-        height: 128px;
-        border-radius: 4px;
+    width: 128px;
+    height: 128px;
+    border-radius: 4px;
+    object-fit: cover;
+    object-position: center;
 
     @media ${device.laptop}{
         width: 180px;
@@ -151,13 +154,41 @@ const ArticleLink = styled.a`
 const TopArticles = () => {
   const [state, setState] = useState({ articles: [] })
 
-  useEffect(() => {
+  const raw = useStaticQuery(graphql`
+    query {
+      allMdx (
+      filter: {
+        frontmatter: {
+          articleNumber : {lt: 5}
+        }
+      }
+      ) {
+          nodes {
+            frontmatter {
+              title
+              path
+              topic
+              intro
+              imgUrl
+              articleNumber
+            }
+          
+        }
+      }
+    }
+  `)
 
+
+  useEffect(() => {
     if (state.articles.length === 0)
-      setState({ articles: articlesList.topArticles })
+      setState({ articles: raw.allMdx.nodes.map(elem => elem.frontmatter).sort((a,b) => {
+          return (a.articleNumber < b.articleNumber ? -1 : 1);
+        })})
 
 
   }, [state.articles.length])
+
+
 
   return (
     <TopArticlesRow>
@@ -165,10 +196,10 @@ const TopArticles = () => {
         <MainArticleImage src={state.articles[0] !== undefined ? state.articles[0].imgUrl : ""}/>
         <ArticleCategory>{state.articles[0] !== undefined ? state.articles[0].topic : ""}</ArticleCategory>
         <ArticleLink
-          href={"articles/" + (state.articles[0] !== undefined ? state.articles[0].topic.toLowerCase().split(" ").join("-") + "/" + state.articles[0].id : "")}>
+          href={(state.articles[0] !== undefined ? state.articles[0].path : '')}>
           <MainArticleTitle>{state.articles[0] !== undefined ? state.articles[0].title : ""}</MainArticleTitle>
         </ArticleLink>
-        <MainArticleText>{state.articles[0] !== undefined ? state.articles[0].text : ""}</MainArticleText>
+        <MainArticleText>{state.articles[0] !== undefined ? state.articles[0].intro : ""}</MainArticleText>
       </MainArticleCol>
 
       <SideArticlesCol>
@@ -178,17 +209,17 @@ const TopArticles = () => {
             <SideArticleContainer>
               <div>
                 <ArticleLink
-                  href={"articles/" + (article !== undefined ? article.topic.toLowerCase().split(" ").join("-") + "/" + article.id : "")}>
+                  href={(article !== undefined ? state.articles[0].path : '')}>
                   <SideArticleImage src={article !== undefined ? article.imgUrl : ""}/>
                 </ArticleLink>
               </div>
               <div style={{ marginLeft: "1rem" }}>
                 <ArticleCategory>{article !== undefined ? article.topic : ""}</ArticleCategory>
                 <ArticleLink
-                  href={"articles/" + (article !== undefined ? article.topic.toLowerCase().split(" ").join("-") + "/" + article.id : "")}>
+                  href={(article !== undefined ? article.path : '')}>
                   <SideArticleTitle>{article !== undefined ? article.title : ""}</SideArticleTitle>
                 </ArticleLink>
-                <SideArticleText>{article !== undefined ? article.text : ""}</SideArticleText>
+                <SideArticleText>{article !== undefined ? article.intro : ""}</SideArticleText>
               </div>
             </SideArticleContainer>
           )

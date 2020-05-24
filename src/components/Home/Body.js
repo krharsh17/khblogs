@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { device } from "../Global"
-import articlesList from "../../content/articles-list.json"
 import newspaper from "../../images/newspaper.png"
 import { getFirebase } from "../Firebase"
+import { graphql, useStaticQuery } from "gatsby"
 
 
 let database
@@ -79,8 +79,10 @@ const PostContainer = styled.div`
 
 const PostImage = styled.img`
     width: 100%;
-    height: auto;
+    height: 400px;
     border-radius: 4px;
+    object-fit: cover;
+    object-position: center;
 `
 
 const PostTitle = styled.div`
@@ -246,6 +248,7 @@ const NewsLetterInput = styled.input`
     background-color: ${props => props.theme.light};
 
 `
+
 const NewsLetterButton = styled.img`
     width: 32px;
     height: 32px;
@@ -261,6 +264,27 @@ const HomeBody = () => {
   const [state, setState] = useState({ articles: [] })
   const [email, setEmail] = useState("")
 
+
+  const raw = useStaticQuery(graphql`
+    query {
+      allMdx {
+          nodes {
+            frontmatter {
+              title
+              path
+              date(formatString: "MMMM DD, YYYY")
+              topic
+              time
+              intro
+              imgUrl
+              articleNumber
+            }
+          
+        }
+      }
+    }
+  `)
+
   let mainArticlesCount = 3
 
 
@@ -268,7 +292,13 @@ const HomeBody = () => {
     initDB()
     if (window.innerWidth > parseInt(device.mobileL.split("px")[0].split(" ")[1]))
       mainArticlesCount = 6
-    setState({ articles: articlesList.allArticles })
+    let articles = []
+    raw.allMdx.nodes.forEach(elem => {
+      if (elem.frontmatter.articleNumber > 4)
+        articles.push(elem.frontmatter)
+    })
+    if (articles.length > 0)
+      setState({ articles: articles })
   }, [])
 
   return (
@@ -283,7 +313,7 @@ const HomeBody = () => {
               <PostCategory>{(article !== undefined ? article.topic : "")}</PostCategory>
               <PostTitle>{(article !== undefined ? article.title : "")}</PostTitle>
               <PostRead
-                href={"articles/" + (article !== undefined ? article.topic.toLowerCase().split(" ").join("-") + "/" + article.id : "")}>Read
+                href={(article !== undefined ? article.path : "")}>Read
                 Article</PostRead>
             </PostContainer>
           })
@@ -295,7 +325,8 @@ const HomeBody = () => {
       <NewsLetterContainer>
         <NewsLetterTitleContainer>
           <NewsLetterTitle>Want to keep yourself updated?</NewsLetterTitle>
-          <NewsLetterSubHeader>Only important stuff, no spam <span role={'img'} aria-label={'prohibited'}>🚫</span></NewsLetterSubHeader>
+          <NewsLetterSubHeader>Only important stuff, no spam <span role={"img"}
+                                                                   aria-label={"prohibited"}>🚫</span></NewsLetterSubHeader>
         </NewsLetterTitleContainer>
         <NewsLetterCard>
           <NewspaperImage/>
@@ -332,7 +363,7 @@ const HomeBody = () => {
               <PostCategory>{(article !== undefined ? article.topic : "")}</PostCategory>
               <PostTitle>{(article !== undefined ? article.title : "")}</PostTitle>
               <PostRead
-                href={"articles/" + (article !== undefined ? article.topic.toLowerCase().split(" ").join("-") + "/" + article.id : "")}>Read
+                href={(article !== undefined ? article.path : "")}>Read
                 Article</PostRead>
             </PostContainer>
           })
