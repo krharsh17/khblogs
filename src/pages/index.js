@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
-import favicon from "../images/favicon.ico"
-import { Helmet } from "react-helmet"
+import social from '../images/social.png'
 import Layout from "../components/layout"
 import { ThemeProvider } from "styled-components"
 import { darkTheme, lightTheme } from "../components/Global"
@@ -9,11 +8,12 @@ import { TopArticles } from "../components/Home/Header"
 import HomeBody from "../components/Home/Body"
 import HomeFooter from "../components/Home/Footer"
 import Loader from "../components/Loader"
+import SEO from "../components/seo"
 
 const IndexPage = () => {
   const [darkMode, setDarkMode] = useState(false)
   const [appReady, setAppReady] = useState(false);
-  const [theme, setTheme] = useState(lightTheme)
+  const [theme, setTheme] = useState(darkTheme)
 
   useEffect(() => {
     const lsDark = localStorage.getItem("dark") === "true"
@@ -33,9 +33,8 @@ const IndexPage = () => {
 
   return (
     <>
-      <Helmet>
-        <link rel="icon" href={favicon}/>
-      </Helmet>
+      <SEO title={"Kumar Harsh"} description={"A collection of all of my written content"} image={social} />
+
       <Layout>
         <ThemeProvider theme={theme}>
           <HomeContainer>

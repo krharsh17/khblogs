@@ -1,0 +1,76 @@
+---
+title: Debounce and Throttle
+path: /articles/javascript/debounce-and-throttle
+date: June 01, 2020
+topic: JavaScript
+time: 4 min read
+intro: Have you ever used a browser event such as `onscroll` or `onresize` in a web app? If you did, you certainly would have noticed how the app heavily slows down if you call anything that requires even a little bit of extra processing juice.
+imgUrl: https://source.unsplash.com/diO0a_ZEiEE/800x800
+articleNumber: 6
+keywords: debounce, throttle, javascript, search, functional, lodash, underscore
+---
+
+Some things that you need to know before you start playing around with production
+
+![image](https://source.unsplash.com/diO0a_ZEiEE/800x450)
+
+## Why debounce or throttle?
+Have you ever used a browser event such as `onscroll` or `onresize` in a web app? If you did, you certainly would have noticed how the app heavily slows down if you call anything that requires even a little bit of extra processing juice. This obviously happens because the said code is numerously called inside the event's callback for a lot more number of times than it actually should be for optimal performance. Debouncing and throttling are two major concepts that can help you to solve this issue. _Read along to find out what they are!_
+
+![image](https://source.unsplash.com/HfYqz_t6IOg/800x450)
+
+## Debouncing
+Debouncing is a concept often used in functional programming which helps to delay a callback after it has been triggered. It is due to this concept that when you type in a search box which does not require you to press the seach button, you still face a delay of at least a fraction of a second before you get to see the results. This delay is intentionally placed by a developer so that the target function, which generally calls a paid-for remote API or carries out a performance intensive task, does not get called so frequently as to overload the costs/resources.
+
+You can see it in action here -
+
+<iframe height="500" style="width: 100%;" scrolling="no" title="Debounce. Leading" src={"https://codepen.io/dcorb/embed/GZWqNV?height=500&theme-id=light&default-tab=css,result"} frameborder="no" allowtransparency="true" allowfullscreen={true}>
+  See the Pen <a href='https://codepen.io/dcorb/pen/GZWqNV'>Debounce. Leading</a> by Corbacho
+  (<a href='https://codepen.io/dcorb'>@dcorb</a>) on <a href='https://codepen.io'>CodePen</a>.
+</iframe>
+
+## Err.. How do I use it?
+
+To implement debouncing, you can use `Underscore` or `lodash`'s inbuilt function called `debounce`. Or if you feel using an entire library just for one function is an overkill, you could extract it. Its usage is pretty simple and straightforward -
+```
+window.onscroll = _.debounce(() => {
+	// Make requests to remote APIs here...
+	// Note that the _ before debounce stands as an reference of lodash
+}, 100);
+```
+
+Sounds straightforward, doesn't it?
+
+![image](https://source.unsplash.com/VW01KVVAvjY/800x450)
+
+## Throttle
+
+Throttle is another concept used to tackle the same problem. More often than not, `onscroll` events are used to lazily-load items in a list, or to update a progress bar that shows how far you've scrolled down an article. In such cases, delaying the UI update until the input stops can relay a bad user experience. So instead of waiting until the user completes the input, the callback function is fired at fixed intervals, so that the UI keeps getting updated. This means that the function will still be called many times, however, certainly not as many times as it would have without throttling down.
+
+## How to throttle down?
+Again, both Underscore & lodash have an inbuilt function for this, which you can either use by importing the libraries or extracting the functions. Here's a sample implementation -
+```
+window.onscroll = _.throttle(() => {
+	// Perform resource-intensive tasks here...
+	// Note that the _ before throttle stands as an reference of lodash
+}, 100);
+```
+
+## Everything together in action
+
+Here's a codepen that contrasts the output of all the three methods of handling callbacks -
+<iframe height="500" style="width: 100%;" scrolling="no" title={"The Difference Between Throttling, Debouncing, and Neither"} src={"https://codepen.io/chriscoyier/embed/vOZNQV?height=265&theme-id=light&default-tab=js,result"} frameborder="no" allowtransparency="true" allowfullscreen={true}>
+  See the Pen <a href='https://codepen.io/chriscoyier/pen/vOZNQV'>The Difference Between Throttling, Debouncing, and Neither</a> by Chris Coyier
+  (<a href='https://codepen.io/chriscoyier'>@chriscoyier</a>) on <a href='https://codepen.io'>CodePen</a>.
+</iframe>
+
+## Footnotes
+Underscore is available as an npm package for node based projects and can be installed by -
+```
+npm install underscore
+```
+
+lodash too can be installed via npm
+```
+npm install lodash
+```

@@ -1,93 +1,49 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { Helmet } from "react-helmet"
-import { useStaticQuery, graphql } from "gatsby"
+import favicon from "../images/favicon.ico"
 
-function SEO({ description, lang, meta, title, img }) {
-  const { site } = useStaticQuery(
-    graphql`
-      query {
-        site {
-          siteMetadata {
-            title
-            description
-            author
-          }
-        }
-      }
-    `
-  )
-
-  const metaDescription = description || site.siteMetadata.description
+function SEO({ description, path, title, image, keywords }) {
 
   return (
-    <Helmet
-      htmlAttributes={{
-        lang,
-      }}
-      title={title}
-      titleTemplate={`%s | ${site.siteMetadata.title}`}
-      meta={[
-        {
-          name: 'title',
-          content: title,
-        },
-        {
-          name: `description`,
-          content: metaDescription,
-        },
-        {
-          property: `og:title`,
-          content: title,
-        },
-        {
-          property: `og:description`,
-          content: metaDescription,
-        },
-        {
-          property: `og:type`,
-          content: `website`,
-        },
-        {
-          property: 'og:image',
-          content: img
-        },
-        {
-          property: `twitter:card`,
-          content: `summary_large_image`,
-        },
-        {
-          property: 'twitter:image',
-          content: img
-        },
-        {
-          property: `twitter:creator`,
-          content: site.siteMetadata.author,
-        },
-        {
-          property: `twitter:title`,
-          content: title,
-        },
-        {
-          property: `twitter:description`,
-          content: metaDescription,
-        },
-      ].concat(meta)}
-    />
+    <Helmet>
+      <title>{title + " | KHBlogs"}</title>
+      <link rel="canonical" href={"https://blog.krharsh17.vision" + (path ? path : "")}/>
+      <meta name="description" content={description}/>
+      {image && <meta name="image" content={image}/>}
+      <link rel="icon" href={favicon}/>
+      <meta name="keywords" content={keywords} />
+      <meta property="og:url" content={"https://blog.krharsh17.vision" + (path ? path : "")}/>
+      <meta property="og:type" content="article"/>
+      <meta property="og:title" content={title}/>
+      <meta property="og:description" content={description}/>
+      {image && <meta property="og:image" content={image}/>}
+      {image && <meta property="og:image:type" content="image/jpeg"/>}
+      {image && <meta property="og:image:width" content="300"/>}
+      {image && <meta property="og:image:height" content="300"/>}
+      <meta name="twitter:card" content="summary_large_image"/>
+      <meta name="twitter:creator" content={"@krharsh17"}/>
+      <meta name="twitter:title" content={title}/>
+      <meta name="twitter:description" content={description}/>
+      {image && <meta name="twitter:image" content={image}/>}
+      <meta name="msapplication-TileImage" content={image}/>
+      <link rel={"image_src"} href={image}/>
+
+    </Helmet>
   )
 }
 
 SEO.defaultProps = {
   lang: `en`,
   meta: [],
-  description: ``,
+  description: ``
 }
 
 SEO.propTypes = {
   description: PropTypes.string,
   lang: PropTypes.string,
   meta: PropTypes.arrayOf(PropTypes.object),
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired
 }
 
 export default SEO

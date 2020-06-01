@@ -155,24 +155,18 @@ const TopArticles = () => {
   const [state, setState] = useState({ articles: [] })
 
   const raw = useStaticQuery(graphql`
-    query {
-      allMdx (
-      filter: {
-        frontmatter: {
-          articleNumber : {lt: 5}
-        }
-      }
-      ) {
-          nodes {
-            frontmatter {
-              title
-              path
-              topic
-              intro
-              imgUrl
-              articleNumber
-            }
-          
+    {
+      allMdx(sort: {fields: [frontmatter___articleNumber], order: DESC}, limit: 4) {
+        nodes {
+          frontmatter {
+            title
+            path
+            topic
+            intro
+            imgUrl
+            articleNumber
+            time
+          }
         }
       }
     }
@@ -181,13 +175,12 @@ const TopArticles = () => {
 
   useEffect(() => {
     if (state.articles.length === 0)
-      setState({ articles: raw.allMdx.nodes.map(elem => elem.frontmatter).sort((a,b) => {
-          return (a.articleNumber < b.articleNumber ? -1 : 1);
-        })})
+      setState({
+        articles: raw.allMdx.nodes.map(elem => elem.frontmatter)
+      })
 
 
   }, [state.articles.length])
-
 
 
   return (
@@ -196,7 +189,7 @@ const TopArticles = () => {
         <MainArticleImage src={state.articles[0] !== undefined ? state.articles[0].imgUrl : ""}/>
         <ArticleCategory>{state.articles[0] !== undefined ? state.articles[0].topic : ""}</ArticleCategory>
         <ArticleLink
-          href={(state.articles[0] !== undefined ? state.articles[0].path : '')}>
+          href={(state.articles[0] !== undefined ? state.articles[0].path : "")}>
           <MainArticleTitle>{state.articles[0] !== undefined ? state.articles[0].title : ""}</MainArticleTitle>
         </ArticleLink>
         <MainArticleText>{state.articles[0] !== undefined ? state.articles[0].intro : ""}</MainArticleText>
@@ -209,14 +202,14 @@ const TopArticles = () => {
             <SideArticleContainer>
               <div>
                 <ArticleLink
-                  href={(article !== undefined ? state.articles[0].path : '')}>
+                  href={(article !== undefined ? state.articles[0].path : "")}>
                   <SideArticleImage src={article !== undefined ? article.imgUrl : ""}/>
                 </ArticleLink>
               </div>
               <div style={{ marginLeft: "1rem" }}>
                 <ArticleCategory>{article !== undefined ? article.topic : ""}</ArticleCategory>
                 <ArticleLink
-                  href={(article !== undefined ? article.path : '')}>
+                  href={(article !== undefined ? article.path : "")}>
                   <SideArticleTitle>{article !== undefined ? article.title : ""}</SideArticleTitle>
                 </ArticleLink>
                 <SideArticleText>{article !== undefined ? article.intro : ""}</SideArticleText>

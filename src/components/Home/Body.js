@@ -266,23 +266,22 @@ const HomeBody = () => {
 
 
   const raw = useStaticQuery(graphql`
-    query {
-      allMdx {
-          nodes {
-            frontmatter {
-              title
-              path
-              date(formatString: "MMMM DD, YYYY")
-              topic
-              time
-              intro
-              imgUrl
-              articleNumber
-            }
-          
-        }
+    {
+  allMdx(sort: {fields: [frontmatter___articleNumber], order: DESC}, skip: 4) {
+    nodes {
+      frontmatter {
+        title
+        path
+        topic
+        intro
+        imgUrl
+        articleNumber
+        time
       }
     }
+  }
+}
+
   `)
 
   let mainArticlesCount = 3
@@ -294,7 +293,7 @@ const HomeBody = () => {
       mainArticlesCount = 6
     let articles = []
     raw.allMdx.nodes.forEach(elem => {
-      if (elem.frontmatter.articleNumber > 4)
+      // if (elem.frontmatter.articleNumber > 4)
         articles.push(elem.frontmatter)
     })
     if (articles.length > 0)

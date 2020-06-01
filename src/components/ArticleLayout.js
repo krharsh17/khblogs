@@ -51,43 +51,18 @@ const ArticleHeader = styled.div`
     position: relative;
 `
 
-const ArticleLayout = ({ children }) => {
+const ArticleLayout = ({ children, pageContext }) => {
   const [darkMode, setDarkMode] = useState(false)
-  const [data, setData] = useState({ title: "" })
-  const [theme, setTheme] = useState(lightTheme)
-  const [appReady, setAppReady] = useState(false);
-
-  const raw = useStaticQuery(graphql`
-    query {
-      allMdx {
-          nodes {
-            frontmatter  {
-              title
-              path
-              date(formatString: "MMMM DD, YYYY")
-              topic
-              time
-              intro
-              imgUrl
-            }
-          
-        }
-      }
-    }
-  `)
+  const data = pageContext.frontmatter;
+  const [theme, setTheme] = useState(darkTheme)
+  const [appReady, setAppReady] = useState(false)
 
   useEffect(() => {
-    const currUrl = window.location.href
-    raw.allMdx.nodes.forEach((elem) => {
-      if (currUrl.endsWith(elem.frontmatter.path) || currUrl.endsWith(elem.frontmatter.path + "/"))
-        setData(elem.frontmatter)
-    })
     const lsDark = localStorage.getItem("dark") === "true"
     toggleDarkMode(lsDark)
     setAppReady(true)
 
-
-  }, [raw.allMdx.nodes])
+  }, [])
 
   const toggleDarkMode = (darkModeBool) => {
     if (darkModeBool === true) {
@@ -99,19 +74,10 @@ const ArticleLayout = ({ children }) => {
     setDarkMode(darkModeBool)
   }
 
-
   return (
     <ThemeProvider theme={theme}>
 
-      <SEO title={data.title} description={data.intro} img={data.imgUrl} />
-      <Helmet>
-        <link rel="icon" href={favicon}/>
-        <meta property="og:type" content="article"/>
-        <meta property="og:url"
-              content={"https://blog.krharsh17.vision/?article=" + data.path}/>
-        <meta property="og:image" content={data.image}/>
-        <meta property="og:description" content=""/>
-      </Helmet>
+      <SEO title={data.title} description={data.intro} image={data.imgUrl} keywords={data.keywords}/>
       <Loader appReady={appReady}/>
       <TopNav title={data.title} darkMode={darkMode} toggleDarkMode={toggleDarkMode}/>
       <ArticleHeader>

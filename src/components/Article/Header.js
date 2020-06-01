@@ -6,16 +6,19 @@ import { device } from "../Global"
 
 const bg = "https://source.unsplash.com/collection/9943293/1600x900"
 
-const HeaderBGImg = styled.img`
+const HeaderBGImg = styled.div`
     position: absolute;
     left: 0;
     top: 0;
     height: 100vh;
-    object-fit: none;
-    object-position: center;
     width: 100vw;
     margin: 0;
     z-index: 0;
+    background-image: url(${bg});
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 
 `
 
@@ -106,11 +109,9 @@ const DownArrowImg = styled.img`
 
 const HeaderBG = () => {
   return (
-    <div style={{ height: "100vh", width: "100vw" }}>
+    <HeaderBGImg>
       <HeaderBGMask/>
-      <HeaderBGImg src={bg}
-                   alt=''/>
-    </div>
+    </HeaderBGImg>
   )
 }
 
