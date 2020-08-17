@@ -13,7 +13,7 @@ import SEO from "../components/seo"
 const IndexPage = () => {
   const [darkMode, setDarkMode] = useState(false)
   const [appReady, setAppReady] = useState(false);
-  const [theme, setTheme] = useState(darkTheme)
+  const [theme, setTheme] = useState(lightTheme)
 
   useEffect(() => {
     const lsDark = localStorage.getItem("dark") === "true"
