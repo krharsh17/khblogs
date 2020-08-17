@@ -54,7 +54,7 @@ const ArticleHeader = styled.div`
 const ArticleLayout = ({ children, pageContext }) => {
   const [darkMode, setDarkMode] = useState(false)
   const data = pageContext.frontmatter;
-  const [theme, setTheme] = useState(darkTheme)
+  const [theme, setTheme] = useState(lightTheme)
   const [appReady, setAppReady] = useState(false)
 
   useEffect(() => {
