@@ -1,0 +1,105 @@
+---
+title: Serverless Computing with AWS Lambda
+path: /articles/cloud/serverless-computing-with-aws-lambda
+date: June 02, 2020
+topic: Cloud Computing
+time: 6 min read
+intro: For when you need just a bunch of code on the server, why hire an entire machine?
+imgUrl: https://source.unsplash.com/rymh7EZPqRs/800x800
+articleNumber: 7
+---
+
+![image](https://source.unsplash.com/rymh7EZPqRs/800x450)
+
+For when you need to run just a bunch of code on a server, why rent an entire machine?
+
+## The concept of backend
+When the client isn't really able to serve the computational needs, then a server is summoned. This happens usually in cases where -
+1. There's some hidden backend logic to your product, which the client can not be trusted with, such as creating checksums for payments
+2. Some heavy computations are required to be carried out, such as compressing an image uploaded to a bucket.
+3. Assets such as databases or file buckets have to be managed.
+
+While standard servers can easily cater to all of these requirements, they still prove to be an overkill. Imagine running an entire virtual machine with a server environment just to generate a bunch of strings!
+
+## Serverless to the rescue
+This is where the concept of 'serverless' backends comes in. A serverless backend still runs on a server but allows you to shift your focus from managing the server to optimizing your code. This means that in a serverless environment, you are only accountable for the amount of time and resources your code expends. This is made possible by sharing a single server for a lot of such concise serverless backends. There are many cloud service providers which offer this amazing functionality. Here, I am going to throw some light at Lambda, the serverless computing solution offered by Amazon Web Services.
+
+![image](https://d2adhoc2vrfpqj.cloudfront.net/2020/02/1zBSAFh5KIA72dmf1j9vfZQ.jpeg)
+
+## AWS Lambda
+
+AWS Lambda is a serverless backend service provided by Amazon Web Services which offers a variety of customizations and enhancements. All you need to do is to upload your code into Lambda, and it will take care of all processes, including deploying and scaling your code. It comes with a bunch of 'triggers' which help you to set a piece of code to be called on another AWS service's event.
+This can come very handy when trying to create DevOps solutions, or post-submission data validation systems.
+
+The [official website](https://aws.amazon.com/lambda/) does a great job in listing out a variety of use cases for the service.
+
+## How does a Lambda function look?
+Basically, a Lambda function consists of three major parts -
+1. **Handler**- This is the entry point to your function. It generally is JSON-formatted, as Lambda functions accept and return JSON-formatted contents.
+2. **Runtime Environment** - The runtime correlates with the language that you're going to use to write your Lambda function. It can be one of -
+	-    C#
+	-   Go
+	-   Java
+	-   Node.js
+	-   Python
+3. **Trigger** - The final requirement is a trigger, which invokes the function. This can be a file upload in S3, a change in a DynamoDB table or a similar event.
+
+## How to set it up
+AWS Lambda is a part of the AWS Starter Account too, which means that if you're a student, you can get it running without going through the hassle of creating a standard AWS account with billing details. I'm going to show how to set up a basic Lambda function in NodeJs runtime environment which takes in two numbers and carries out a few calculations on them.
+
+For an input as
+```
+{
+	"Number1": 20,
+	"Number2": 4,
+}
+```
+
+the function would respond with
+```
+{
+	"Number1": 20,
+	"Number2": 4,
+	"sum": 24,
+	"difference": 16,
+	"product": 80,
+	"quotient": 5
+}
+```
+Here we go -
+1. Sign up for an [AWS Educate Starter account](http://www.awseducate.com/registration?refid=FzizgiH5V6WOKkktaM4Gw68UhD3QzBbe) or a standard AWS account.
+2. Log in to your AWS account and navigate to the [Lambda console](https://console.aws.amazon.com/lambda). Click on **Create Function** and choose **Author from Scratch** so that you can start with a minimal boilerplate.
+3. Choose a name for your function, select the Nodejs runtime and define a role for your Lambda to use. Since any external resources or triggers aren't required currently, you don’t need special permissions, but this is where you would add a role with those permissions.
+![image](https://images.squarespace-cdn.com/content/v1/51814c87e4b0c1fda9c1fc50/1528476318667-8MPICO5FRBHLM1GCR37J/ke17ZwdGBToddI8pDm48kKac3fzUIoNsOpCaSnFC4LlZw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZamWLI2zvYWH8K3-s_4yszcp2ryTI0HqTOaaUohrI8PIctyutgiqlBJXEp0e4RXcwaJfw8_qAt-EA9ADpR3Fqj4/5-aws-lambda-create-function-nodejs.png?format=1000w)
+4. Instead of simply defining the function, AWS also allows use to define test events, which can directly be run against our Lambda function to test them. It is always advisable to create one. Choose **Configure tests** from the **Select a test event** dropdown.
+![image](https://images.squarespace-cdn.com/content/v1/51814c87e4b0c1fda9c1fc50/1528476285220-AIVZOBPSBVDCLUOMM0IT/ke17ZwdGBToddI8pDm48kFNkCUfixeyTM4sgdLyiGdXlfiSMXz2YNBs8ylwAJx2qrCLSIWAQvdC7iWmC9HNtRS7LAXuYD8bQXNLv8VHg-n6xbMnDxEhbxohDMA6PwfBFMobRUQOmPI622CwdwqRv-g/2-aws-lambda-test-events.png?format=500w)
+AWS provides a great amount of templates. In the current scenario, you can use the Hello World template and modify it to meet the requirements
+![image](https://images.squarespace-cdn.com/content/v1/51814c87e4b0c1fda9c1fc50/1528476294618-KWNOON57HC9ET1BL38B8/ke17ZwdGBToddI8pDm48kJbqFnqLG7XLsE3kGEBt7DlZw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZUJFbgE-7XRK3dMEBRBhUpxlP6CollG5bHsXmMwRzux-mwwbd7EVkgFOZmGJ-V8u8mT-7p6I5fc9ajDLAMk4xEY/3-aws-lambda-test-events-config.png?format=1000w)
+
+Once the test is created, you can trigger it with the **Test** button.
+5. Now add the code for your function
+```
+exports.handler = (event, context, callback) => {
+   var n1 = event.Number1;
+   var n2 = event.Number2;
+   var sum = n1 + n2;
+   var product = n1 * n2;
+   var difference = n1 - n2;
+   var quotient = n1 / n2;
+   callback(null, {
+       "Number1": n1,
+       "Number2": n2,
+       "sum": sum,
+       "product": product,
+       "difference": difference,
+       "quotient": quotient
+   });
+};
+```
+That's it! Now you can test your function by clicking on the **Test** button.
+
+---
+
+So that was all about the introduction of an amazing AWS service. Make sure to check out the [official AWS documentation](https://docs.aws.amazon.com/lambda/latest/dg/invoking-lambda-functions.html) to explore more possibilities with Lambda functions.
+
+_Thanks for reading!_
