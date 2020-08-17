@@ -2,7 +2,7 @@
   KHBlogs
 </h1>
 
-Welcome to my personal blog! This repository holds the code for the app at [https://blog.krharsh17.vision](https://blog.krharsh17.vision)
+Welcome to my personal blog! This repository holds the code for the app at [https://blog.krharsh17.vision](https://blog.kumarharsh.me)
 
 Components in this app were not meant to be used separately, however you can extract and modify any according to your convenience
 
