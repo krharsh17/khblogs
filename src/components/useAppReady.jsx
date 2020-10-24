@@ -1,11 +1,11 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react"
 
 export const useAppReady = () => {
-    const [appReady, setAppReady] = useState(false);
+  const [appReady, setAppReady] = useState(false)
 
-    useEffect(() => {
-        setAppReady(true)
-    })
+  useEffect(() => {
+    setAppReady(true)
+  })
 
-    return appReady
+  return appReady
 }

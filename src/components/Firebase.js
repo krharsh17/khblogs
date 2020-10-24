@@ -1,4 +1,4 @@
-import firebaseConfig from './firebase-config.json';
+import firebaseConfig from "./firebase-config.json"
 
 let firebaseInstance
 export const getFirebase = firebase => {
