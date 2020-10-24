@@ -1,8 +1,9 @@
-import React from "react"
+import React, {useContext} from "react"
 import styled from "styled-components"
 import { Col, Container, Row } from "reactstrap"
 import DarkModeToggle from "react-dark-mode-toggle"
 import { device } from "../Global"
+import {CustomThemeContext} from "../../theme/CustomThemeProvider";
 
 const HomeContainer = styled(Container)`
     background-color: ${props => props.theme.light};
@@ -11,7 +12,7 @@ const HomeContainer = styled(Container)`
 `
 
 const HomeNavContainer = styled(Row)`
-    width: 90%;
+    width: 100%;
     height: 64px;
     color: ${props => props.theme.light};
     background-color: ${props => props.theme.primary};
@@ -29,7 +30,6 @@ const HomeNavContainer = styled(Row)`
     
     @media ${device.tablet} {
         height: 80px;
-        width: 80%;
         padding-left: 10%;
         padding-right: 10%;
         font-size: 44px;
@@ -43,18 +43,6 @@ const SearchContainer = styled.div`
     align-items: center;
     justify-content: space-between;
 `
-
-// const SearchBar = styled.input`
-//     width: 30vw;
-//     height: 36px;
-//     text-decoration: none;
-//     border: none;
-//     border-radius: 4px;
-//     color: ${props => props.theme.primary};
-//     padding-left: 16px;
-//     font-family: 'Ropa Sans';
-//     font-size: 18px;
-// `;
 
 const ProfileImage = styled.img`
     width: 48px;
@@ -72,6 +60,12 @@ const HomeLink = styled.a`
 `
 
 const HomeNav = (props) => {
+  const { currentTheme, setTheme } = useContext(CustomThemeContext)
+
+  const toggleDarkMode = (checked) => {
+    setTheme(checked ? "dark" : "light")
+  }
+
   return (
     <Col>
       <HomeNavContainer theme={props.theme}>
@@ -79,8 +73,8 @@ const HomeNav = (props) => {
         <SearchContainer>
           {/*<SearchBar placeholder={'Search...'}/>*/}
           <DarkModeToggle
-            onChange={props.toggleDarkMode}
-            checked={props.darkMode}
+            onChange={toggleDarkMode}
+            checked={currentTheme === "dark"}
             size={56}
           />
           <ProfileImage

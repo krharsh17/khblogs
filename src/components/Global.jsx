@@ -1,3 +1,5 @@
+import {light} from "@material-ui/core/styles/createPalette";
+
 const lightTheme = {
     primary: '#3F6396',
     secondary: '#009CA3',
@@ -33,6 +35,10 @@ const darkTheme = {
     disabled: '#888'
 }
 
+const getTheme = (theme) => {
+    return (theme === "light" ? lightTheme : darkTheme)
+}
+
 const size = {
     mobileS: '320px',
     mobileM: '375px',
@@ -55,4 +61,4 @@ const device = {
     desktopL: `(min-width: ${size.desktop})`
 }
 
-export {lightTheme, alternateTheme, darkTheme, device};
+export {lightTheme, alternateTheme, darkTheme, device, getTheme};

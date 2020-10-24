@@ -3,7 +3,12 @@
  *
  * See: https://www.gatsbyjs.org/docs/ssr-apis/
  */
-exports.onPreRenderHTML = ({ getHeadComponents, replaceHeadComponents }) => {
+import CustomThemeProvider from "./src/theme/CustomThemeProvider";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import React from "react";
+import Layout from "./src/components/layout";
+
+export const onPreRenderHTML = ({ getHeadComponents, replaceHeadComponents }) => {
   const headComponents = getHeadComponents();
   headComponents.sort((a, b) => {
     if (a.type === 'meta') {
@@ -15,5 +20,14 @@ exports.onPreRenderHTML = ({ getHeadComponents, replaceHeadComponents }) => {
   });
   replaceHeadComponents(headComponents);
 };
+
+export const wrapRootElement = ({ element }) => {
+  return <CustomThemeProvider>
+    <CssBaseline/>
+    <Layout>
+      {element}
+    </Layout>
+  </CustomThemeProvider>
+}
 
 // You can delete this file if you're not using it
